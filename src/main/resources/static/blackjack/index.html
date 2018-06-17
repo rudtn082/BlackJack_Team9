@@ -530,7 +530,8 @@
     })
 
     $('#more').click(function(){
-        var bet = 100;
+        // 기능추가 7 : 기본요금 1000
+        var bet = 1000;
         var currentBet = parseInt($('#bet').html());
         var money = parseInt($('#money').html());
         if (money < bet) {
@@ -542,7 +543,8 @@
     });
 
     $('#less').click(function(){
-        var bet = 100;
+        // 기능추가 7 : 기본요금 1000
+        var bet = 1000;
         var currentBet = parseInt($('#bet').html());
         var money = parseInt($('#money').html());
         if(currentBet < bet) {
