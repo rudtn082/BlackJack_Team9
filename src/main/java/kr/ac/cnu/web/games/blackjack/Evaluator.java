@@ -23,7 +23,11 @@ public class Evaluator {
 
         playerMap.forEach((s, player) -> {
             int playerResult = player.getHand().getCardSum();
-            if (playerResult > 21) {
+            // 기능추가 3
+            // Ace + 10 = 21일 경우, 즉 카드를 받자마자 21일 경우 블랙잭
+            if ((playerResult == 21) && (player.getHand().getCardList().size() == 2)) {
+                player.blackjack();
+            } else if (playerResult > 21) {
                 player.lost();
             } else if(dealerResult > 21) {
                 player.win();
