@@ -68,21 +68,54 @@ public class BlackApiController {
     public GameRoom bet(@RequestHeader("name") String name, @PathVariable String roomId, @RequestBody long betMoney) {
         User user = this.getUserFromSession(name);
 
-        return blackjackService.bet(roomId, user, betMoney);
+        GameRoom gameRoom = blackjackService.bet(roomId, user, betMoney);
+
+        // BugFix3
+        // 수행된 게임룸에서 플레이어의 balance를 가져옴.
+        user.setAccount(gameRoom.getPlayerList().get(name).getBalance());
+
+        // 그 값을 저장 userRepository 업데이트
+        System.out.println(user.getAccount());
+        userRepository.save(user);
+
+
+        return gameRoom;
     }
 
     @PostMapping("/rooms/{roomId}/hit")
     public GameRoom hit(@RequestHeader("name") String name, @PathVariable String roomId) {
         User user = this.getUserFromSession(name);
 
-        return blackjackService.hit(roomId, user);
+        GameRoom gameRoom = blackjackService.hit(roomId, user);
+
+        // BugFix3
+        // 수행된 게임룸에서 플레이어의 balance를 가져옴.
+        user.setAccount(gameRoom.getPlayerList().get(name).getBalance());
+
+        // 그 값을 저장 userRepository 업데이트
+        System.out.println(user.getAccount());
+        userRepository.save(user);
+
+
+        return gameRoom;
     }
 
     @PostMapping("/rooms/{roomId}/stand")
     public GameRoom stand(@RequestHeader("name") String name, @PathVariable String roomId) {
         User user = this.getUserFromSession(name);
 
-        return blackjackService.stand(roomId, user);
+
+        GameRoom gameRoom = blackjackService.stand(roomId, user);
+
+        // BugFix3
+        // 수행된 게임룸에서 플레이어의 balance를 가져옴.
+        user.setAccount(gameRoom.getPlayerList().get(name).getBalance());
+
+        // 그 값을 저장 userRepository 업데이트
+        System.out.println(user.getAccount());
+        userRepository.save(user);
+
+        return gameRoom;
     }
 
     @GetMapping("/rooms/{roomId}")
