@@ -77,7 +77,6 @@ public class GameRoom {
     }
 
     public void double_down(String name, long bet) {
-        System.out.println("gameRoom_double_down");
         Player player = playerList.get(name);
 
         player.double_down_bet(bet);

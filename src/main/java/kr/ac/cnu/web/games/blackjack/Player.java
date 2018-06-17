@@ -41,7 +41,6 @@ public class Player {
             balance -= bet;
             currentBet = bet;
         }
-
         isPlaying = true;
     }
 
@@ -52,17 +51,13 @@ public class Player {
 
     public void win() {
         balance += currentBet * 2;
-        currentBet = 0;
     }
 
     public void tie() {
         balance += currentBet;
-        currentBet = 0;
     }
 
-    public void lost() {
-        currentBet = 0;
-    }
+    public void lost() {}
 
     public Card hitCard() {
         return hand.drawCard();
@@ -73,7 +68,6 @@ public class Player {
     }
 
     public void double_down_bet(long bet) {
-        System.out.println("player_double_down_bet");
         if(balance < bet) {
             throw new NotEnoughBalanceException();
         }
