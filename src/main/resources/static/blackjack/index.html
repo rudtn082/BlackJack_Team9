@@ -538,8 +538,12 @@
             bet = money;
         }
 
-        $('#bet').html(currentBet + bet);
-        $('#money').html(money - bet);
+        // 기능추가 8
+        // 베팅금액 10000으로 제한
+        if (currentBet < 10000){
+            $('#bet').html(currentBet + bet);
+            $('#money').html(money - bet);
+        }
     });
 
     $('#less').click(function(){

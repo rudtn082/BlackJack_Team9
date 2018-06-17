@@ -68,6 +68,12 @@ public class BlackApiController {
     public GameRoom bet(@RequestHeader("name") String name, @PathVariable String roomId, @RequestBody long betMoney) {
         User user = this.getUserFromSession(name);
 
+        // 기능추가 8
+        // 베팅금액이 10000을 넘어갈 수 없도록 확인
+        if(betMoney > 10000){
+            throw new RuntimeException();
+        }
+
         GameRoom gameRoom = blackjackService.bet(roomId, user, betMoney);
 
         // BugFix3
