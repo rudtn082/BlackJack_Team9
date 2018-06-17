@@ -20,39 +20,6 @@
 
         }
 
-        #main {
-            position: absolute;
-            background: url("../images/login.jpg");
-            background-size: 100% 100%;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            background-color: transparent;
-            z-index: -1;
-        }
-
-        #game_main {
-            position: absolute;
-            background: url("../images/play.jpg");
-            background-size: 100% 100%;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            height: 100%;
-            background-color: transparent;
-            z-index: -1;
-        }
-
-        #hand {
-            position: absolute;
-            bottom: 0px;
-            right: 0px;
-            width: 35%;
-            height: 35%;
-            z-index: 0;
-        }
-
         h1{
             font-size:35px;
             text-align: center;
@@ -92,9 +59,9 @@
             width: auto;
             max-width: 900px;
             margin: 0 auto;
+            background-color: #fff;
             min-height: 500px;
             text-align: center;
-            color: white;
         }
 
         .dealer-cards .card, .player-cards .card {
@@ -438,7 +405,6 @@
     </style>
 </head>
 <body>
-<div id="main"></div> <!--뷰티1 메인 UI 추가-->
 <div class="page" id="login">
     <div>
         <input type="text" id="input_login_name" />
@@ -451,9 +417,6 @@
         <div class="buttons"><div class="btn" id="create_room_button">Create</div></div>
     </div>
 </div>
-
-<div id="game_main" style="display:none"></div> <!--뷰티1 게임 UI 추가-->
-<img id="hand" src="../images/hand.png" style="display: none"> <!--뷰티1 게임 UI 추가-->
 <div class="page" id="game" style="display: none">
     <div class="dealer-cards"></div>
     <div class="clear"></div>
@@ -521,8 +484,6 @@
             $('#login').hide();
             $('#lobby').hide();
             $('#game').show();
-            $('#main').hide(500); //뷰티1
-            $('#game_main').show(500); //뷰티1
             gameRoomId = data.roomId;
             drawGameRoom(data);
         });
@@ -540,7 +501,6 @@
             data: JSON.stringify(bet),
             contentType:'application/json;',
         }).done(function(data) {
-            $('#hand').show(200); //뷰티1
             drawGameRoom(data);
         });
     })
@@ -565,7 +525,6 @@
                 'name':user.name
             },
         }).done(function(data) {
-            $('#hand').hide(200); //뷰티1
             drawGameRoom(data);
         });
     })
@@ -608,7 +567,6 @@
             $('#less').show();
             $('#hit').hide();
             $('#stand').hide();
-            $('#hand').hide(200); //뷰티1
         } else {
             $('#deal').hide();
             $('#more').hide();
