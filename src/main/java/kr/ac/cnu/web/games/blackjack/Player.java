@@ -30,11 +30,17 @@ public class Player {
     }
 
     public void placeBet(long bet) {
-        if(balance < bet) {
+        if(balance < 0) {
             throw new NotEnoughBalanceException();
+            // 기능추가 9
+            // 현재금액이 베팅단위보다 적을경우 All in
+        } else if(balance< bet){
+            currentBet = balance;
+            balance = 0;
+        } else{
+            balance -= bet;
+            currentBet = bet;
         }
-        balance -= bet;
-        currentBet = bet;
 
         isPlaying = true;
     }
