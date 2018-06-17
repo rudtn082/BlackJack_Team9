@@ -60,6 +60,13 @@ public class Player {
         currentBet = 0;
     }
 
+    // 기능추가 3
+    // 블랙잭일 경우 1.5배로
+    public void blackjack() {
+        balance += currentBet * 1.5;
+        currentBet = 0;
+    }
+
     public void lost() {
         currentBet = 0;
     }
