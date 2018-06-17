@@ -53,7 +53,12 @@ public class BlackApiController {
         return userRepository.save(user);
     }
 
+    @PostMapping("/rooms/{roomId}/double_down")
+    public GameRoom double_down(@RequestHeader("name") String name, @PathVariable String roomId, @RequestBody long betMoney) {
+        User user = this.getUserFromSession(name);
 
+        return blackjackService.double_down(roomId, user, betMoney);
+    }
 
 
 

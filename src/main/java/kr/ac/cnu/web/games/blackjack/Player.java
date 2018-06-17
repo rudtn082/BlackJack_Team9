@@ -72,4 +72,14 @@ public class Player {
         this.isPlaying = false;
     }
 
+    public void double_down_bet(long bet) {
+        System.out.println("player_double_down_bet");
+        if(balance < bet) {
+            throw new NotEnoughBalanceException();
+        }
+        balance -= bet;
+        currentBet = currentBet*2;
+
+        isPlaying = true;
+    }
 }

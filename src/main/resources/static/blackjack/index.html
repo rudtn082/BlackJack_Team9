@@ -471,7 +471,7 @@
     <div class="dealer-cards"></div>
     <div class="clear"></div>
     <div class="player-cards"></div>
-    <div class="buttons"><div class="btn" id="hit">Hit</div><div class="btn" id="stand">Stand</div></div>
+    <div class="buttons"><div class="btn" id="hit">Hit</div><div class="btn" id="stand">Stand</div><div class="btn" id="double_down" style="display: none">Double Down</div></div>
     <div class="buttons"><div class="btn" id="deal">Deal</div></div>
     <div class="betting-area">
         <b>Your Bet</b><br>
@@ -559,6 +559,7 @@
             contentType:'application/json;',
         }).done(function(data) {
             $('#hand').show(200); //뷰티1
+            $('#double_down').show();
             drawGameRoom(data);
         });
     })
@@ -571,6 +572,7 @@
                 'name':user.name
             },
         }).done(function(data) {
+            $('#double_down').hide();
             drawGameRoom(data);
         });
     })
@@ -584,8 +586,50 @@
             },
         }).done(function(data) {
             $('#hand').hide(200); //뷰티1
+            $('#double_down').hide();
             drawGameRoom(data);
         });
+    })
+
+    // when double down button hit
+    $('#double_down').click(function() {
+        var currentBet = parseInt($('#bet').html());
+        var money = parseInt($('#money').html());
+
+        if (money < bet) {
+            alert("you lack money");
+        }
+        else{
+            // 플레이어에게 카드 한장 줌
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/hit',
+                headers: {
+                    'name':user.name
+                },
+            }).done(function(data) {
+                drawGameRoom(data);
+                // double_down 했으면 (hit 하고 double_down)을 두번 못하게 버튼 숨김
+                $('#double_down').hide();
+                $('#hit').hide();
+                // 배팅 금액 두배
+                $('#bet').html(currentBet*2);
+                $('#money').html(money - currentBet);
+            });
+
+            // 바뀐 배팅 금액 서버에 반영
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/double_down',
+                headers: {
+                    'name':user.name
+                },
+                data: JSON.stringify(currentBet),
+                contentType:'application/json;',
+            });
+
+
+        }
     })
 
     $('#more').click(function(){
@@ -627,6 +671,7 @@
             $('#hit').hide();
             $('#stand').hide();
             $('#hand').hide(200); //뷰티1
+            $('#double_down').hide();
         } else {
             $('#deal').hide();
             $('#more').hide();
