@@ -2,6 +2,7 @@ package kr.ac.cnu.web.service;
 
 import kr.ac.cnu.web.games.blackjack.Deck;
 import kr.ac.cnu.web.games.blackjack.GameRoom;
+import kr.ac.cnu.web.games.blackjack.Player;
 import kr.ac.cnu.web.model.User;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +55,14 @@ public class BlackjackService {
         GameRoom gameRoom = gameRoomMap.get(roomId);
 
         gameRoom.hit(user.getName());
+
+        //  BugFix1
+        // 히트 후 손패의 합이 21을 넘어가면 stand와 같은 절차를 수행(멈추고 판별)
+        Player player =  gameRoom.getPlayerList().get(user.getName());
+        if(player.getHand().getCardSum() >21){
+            gameRoom.stand(user.getName());
+            gameRoom.playDealer();
+        }
 
         return gameRoom;
     }
