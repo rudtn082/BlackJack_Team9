@@ -59,12 +59,12 @@ public class BlackApiController {
 
         GameRoom gameRoom = blackjackService.double_down(roomId, user, betMoney);
 
+        System.out.println("aa");
         // BugFix3
         // 수행된 게임룸에서 플레이어의 balance를 가져옴.
         user.setAccount(gameRoom.getPlayerList().get(name).getBalance());
 
         // 그 값을 저장 userRepository 업데이트
-        System.out.println(user.getAccount());
         userRepository.save(user);
 
 
