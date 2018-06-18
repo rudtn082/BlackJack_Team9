@@ -86,7 +86,6 @@ public class BlackApiController {
         user.setAccount(gameRoom.getPlayerList().get(name).getBalance());
 
         // 그 값을 저장 userRepository 업데이트
-        System.out.println(user.getAccount());
         userRepository.save(user);
 
 
@@ -104,7 +103,6 @@ public class BlackApiController {
         user.setAccount(gameRoom.getPlayerList().get(name).getBalance());
 
         // 그 값을 저장 userRepository 업데이트
-        System.out.println(user.getAccount());
         userRepository.save(user);
 
 
@@ -123,7 +121,6 @@ public class BlackApiController {
         user.setAccount(gameRoom.getPlayerList().get(name).getBalance());
 
         // 그 값을 저장 userRepository 업데이트
-        System.out.println(user.getAccount());
         userRepository.save(user);
 
         return gameRoom;

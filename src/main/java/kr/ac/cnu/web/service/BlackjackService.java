@@ -63,7 +63,6 @@ public class BlackjackService {
             gameRoom.stand(user.getName());
             gameRoom.playDealer();
         }
-
         return gameRoom;
     }
 
