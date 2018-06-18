@@ -64,6 +64,7 @@ public class Player {
     // 블랙잭일 경우 1.5배로
     public void blackjack() {
         balance += currentBet * 1.5;
+        //balance -= currentBet;
         currentBet = 0;
     }
 
@@ -85,8 +86,8 @@ public class Player {
             throw new NotEnoughBalanceException();
         }
         balance -= bet;
-        currentBet = currentBet*2;
+        currentBet = 0;
 
-        isPlaying = true;
+        //isPlaying = true;
     }
 }

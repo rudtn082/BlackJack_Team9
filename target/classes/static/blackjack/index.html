@@ -565,6 +565,8 @@
     })
 
     $('#hit').click(function() {
+        var currentBet = parseInt($('#bet').html());
+        var tmp_currentBet = currentBet/1000;
         $.ajax({
             type: 'POST',
             url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/hit',
@@ -574,10 +576,17 @@
         }).done(function(data) {
             $('#double_down').hide();
             drawGameRoom(data);
+            if(data.finished) {
+                for(var i=0; i<tmp_currentBet; i++) {
+                    tmp_more();
+                }
+            }
         });
     })
 
     $('#stand').click(function() {
+        var currentBet = parseInt($('#bet').html());
+        var tmp_currentBet = currentBet/1000;
         $.ajax({
             type: 'POST',
             url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/stand',
@@ -588,6 +597,9 @@
             $('#hand').hide(200); //뷰티1
             $('#double_down').hide();
             drawGameRoom(data);
+            for(var i=0; i<tmp_currentBet; i++) {
+                tmp_more();
+            }
         });
     })
 
@@ -608,13 +620,10 @@
                     'name':user.name
                 },
             }).done(function(data) {
-                drawGameRoom(data);
+                drawGameRoom_doubledown(data);
                 // double_down 했으면 (hit 하고 double_down)을 두번 못하게 버튼 숨김
                 $('#double_down').hide();
                 $('#hit').hide();
-                // 배팅 금액 두배
-                $('#bet').html(currentBet*2);
-                $('#money').html(money - currentBet);
             });
 
             // 바뀐 배팅 금액 서버에 반영
@@ -627,10 +636,25 @@
                 data: JSON.stringify(currentBet),
                 contentType:'application/json;',
             });
-
-
         }
     })
+
+    function tmp_more() {
+        // 기능추가 7 : 기본요금 1000
+        var bet = 1000;
+        var currentBet = parseInt($('#bet').html());
+        var money = parseInt($('#money').html());
+        if (money < bet) {
+            bet = money;
+        }
+
+        // 기능추가 8
+        // 베팅금액 10000으로 제한
+        if (currentBet < 10000){
+            $('#bet').html(currentBet + bet);
+            $('#money').html(money - bet);
+        }
+    }
 
     $('#more').click(function(){
         // 기능추가 7 : 기본요금 1000
@@ -701,6 +725,58 @@
 
         $('#bet').html(gameRoom.playerList[user.name].currentBet);
         $('#money').html(gameRoom.playerList[user.name].balance);
+    }
+
+    function drawGameRoom_doubledown(gameRoom) {
+        console.log(gameRoom);
+        if (gameRoom.finished) {
+            $('#deal').show();
+            $('#more').show();
+            $('#less').show();
+            $('#hit').hide();
+            $('#stand').hide();
+            $('#hand').hide(200); //뷰티1
+            $('#double_down').hide();
+        } else {
+            $('#deal').hide();
+            $('#more').hide();
+            $('#less').hide();
+            $('#hit').show();
+            $('#stand').show();
+        }
+
+        $('.dealer-cards').html("");
+        gameRoom.dealer.hand.cardList.forEach(function(card) {
+            $('.dealer-cards').append(generateCardDiv(card.rank, card.suit));
+        })
+        if (gameRoom.dealer.hand.cardList.length == 1) {
+            $('.dealer-cards').append('<div class="card card2 flipped" data-value="6"></div>');
+        }
+        if (gameRoom.dealer.hand.cardList.length > 0) {
+            $('.dealer-cards').append('<div id="dealerTotal" class="dealer-total">' + gameRoom.dealer.hand.cardSum + '</div>')
+        }
+
+        $('.player-cards').html("");
+        gameRoom.playerList[user.name].hand.cardList.forEach(function(card) {
+            $('.player-cards').append(generateCardDiv(card.rank, card.suit));
+        });
+        if (gameRoom.playerList[user.name].hand.cardList.length > 0) {
+            $('.player-cards').append('<div id="playerTotal" class="player-total">' + gameRoom.playerList[user.name].hand.cardSum + '</div>')
+        }
+
+        if (gameRoom.finished) {
+            if(parseInt(document.getElementById('playerTotal').innerText) > 21) {
+                $('#money').html(gameRoom.playerList[user.name].balance - gameRoom.playerList[user.name].currentBet);
+            }
+            /*else {  // 21 이하      gameRoom.playerList[user.name].currentBetparseInt(document.getElementById('bet').innerText)*2)
+                $('#money').html(parseInt($('#money').html())+parseInt(document.getElementById('bet').innerText));
+            }*/
+
+            $('#bet').html(parseInt(document.getElementById('bet').innerText)*2);
+        } else {
+            $('#money').html(gameRoom.playerList[user.name].balance - gameRoom.playerList[user.name].currentBet);
+            $('#bet').html(parseInt(document.getElementById('bet').innerText)*2);
+        }
     }
 
     function generateCardDiv(rank, suit) {
