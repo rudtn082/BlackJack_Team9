@@ -447,10 +447,22 @@
     #user_name, #money {
         margin: 0px;
     }
+    #ranking{
+        border : 1px solid black;
+        width: 180px;
+        border-radius: 10px;
+        background-color: white;
+        float:left;
+        position: absolute;
+        color:black;
+
+    }
 </style>
 </head>
 <body>
 <div id="main"></div> <!--뷰티1 메인 UI 추가-->
+<!-- 보더 -->
+<div id="ranking"></div>
 <div id="name_balance"></div>
 <div class="page" id="login">
     <div>
@@ -489,6 +501,17 @@
 <script>
     var user;
     var gameRoomId;
+
+    setInterval( function (){
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/api/black-jack/getName',
+        }).done(function(data) {
+            $('#ranking').html(data);
+        });
+    },1000);
+
+
 
     $('#login_button').click(function() {
         var loginName = $('#input_login_name').val();

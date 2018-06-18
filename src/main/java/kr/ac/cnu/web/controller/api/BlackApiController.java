@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.awt.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -44,6 +47,7 @@ public class BlackApiController {
         Optional<User> userOptional = userRepository.findById(name);
         if (userOptional.isPresent()) {
             throw new RuntimeException();
+
         }
 
         // TODO new user
@@ -65,7 +69,6 @@ public class BlackApiController {
 
         // 그 값을 저장 userRepository 업데이트
         userRepository.save(user);
-
 
         return gameRoom;
     }
@@ -140,6 +143,43 @@ public class BlackApiController {
     public GameRoom getGameRoomData(@PathVariable String roomId) {
         return blackjackService.getGameRoom(roomId);
     }
+
+    @GetMapping("/getName")
+    public String getName() {
+        List<User> list = userRepository.findAll();
+
+        String text = "";
+        Collections.sort(list, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+
+                if (o1.getAccount() > o2.getAccount()) {
+                    return -1;
+                } else if (o1.getAccount() < o2.getAccount()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+
+        int Size = 0;
+        if (Size >=6){
+            Size = 6;
+        } else {
+            Size = list.size();
+        }
+        for (int i = 0; i < Size; i++) {
+            text += (i+1)+ "."+ list.get(i).getName() + " :  " + list.get(i).getAccount() +"<br>";
+
+        }
+        System.out.println(text);
+
+        return text;
+    }
+
+
+
 
 
     private User getUserFromSession(String name) {
