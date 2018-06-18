@@ -61,9 +61,9 @@ public class Player {
     }
 
     // 기능추가 3
-    // 블랙잭일 경우 1.5배로
+    // 블랙잭일 경우 1.5배로 ( 2배의 1.5배)
     public void blackjack() {
-        balance += currentBet * 1.5;
+        balance += currentBet * 3;
         //balance -= currentBet;
         currentBet = 0;
     }
@@ -78,6 +78,7 @@ public class Player {
 
     public void stand() {
         this.isPlaying = false;
+         // currentBet=0;
     }
 
     public void double_down_bet(long bet) {
@@ -85,8 +86,11 @@ public class Player {
         if(balance < bet) {
             throw new NotEnoughBalanceException();
         }
+
+        // 금액을 빼간다고 가정하므로 다시 채워줌
         balance -= bet;
-        currentBet = 0;
+
+        currentBet = bet * 2;
 
         //isPlaying = true;
     }

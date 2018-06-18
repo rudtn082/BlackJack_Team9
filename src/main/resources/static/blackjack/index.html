@@ -612,9 +612,11 @@
             alert("you lack money");
         }
         else{
+
+            /**
             // 플레이어에게 카드 한장 줌
             $.ajax({
-                type: 'POST',
+                type: 'POST', // /rooms/{roomId}/double_down
                 url: 'http://localhost:8080/api/black-jack/rooms/' + gameRoomId + '/hit',
                 headers: {
                     'name':user.name
@@ -625,6 +627,9 @@
                 $('#double_down').hide();
                 $('#hit').hide();
             });
+             **/
+
+
 
             // 바뀐 배팅 금액 서버에 반영
             $.ajax({
@@ -635,7 +640,13 @@
                 },
                 data: JSON.stringify(currentBet),
                 contentType:'application/json;',
+            }).done(function(data) {
+                drawGameRoom_doubledown(data);
+                // double_down 했으면 (hit 하고 double_down)을 두번 못하게 버튼 숨김
+                $('#double_down').hide();
+                $('#hit').hide();
             });
+
         }
     })
 
@@ -766,7 +777,8 @@
 
         if (gameRoom.finished) {
             if(parseInt(document.getElementById('playerTotal').innerText) > 21) {
-                $('#money').html(gameRoom.playerList[user.name].balance - gameRoom.playerList[user.name].currentBet);
+                // 수정
+                $('#money').html(gameRoom.playerList[user.name].balance);
             }
             /*else {  // 21 이하      gameRoom.playerList[user.name].currentBetparseInt(document.getElementById('bet').innerText)*2)
                 $('#money').html(parseInt($('#money').html())+parseInt(document.getElementById('bet').innerText));
@@ -774,7 +786,7 @@
 
             $('#bet').html(parseInt(document.getElementById('bet').innerText)*2);
         } else {
-            $('#money').html(gameRoom.playerList[user.name].balance - gameRoom.playerList[user.name].currentBet);
+            $('#money').html(gameRoom.playerList[user.name].balance);
             $('#bet').html(parseInt(document.getElementById('bet').innerText)*2);
         }
     }

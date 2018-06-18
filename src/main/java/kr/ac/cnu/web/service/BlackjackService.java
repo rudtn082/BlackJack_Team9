@@ -60,8 +60,8 @@ public class BlackjackService {
         // 히트 후 손패의 합이 21을 넘어가면 stand와 같은 절차를 수행(멈추고 판별)
         Player player =  gameRoom.getPlayerList().get(user.getName());
         if(player.getHand().getCardSum() >21){
-            gameRoom.stand(user.getName());
-            gameRoom.playDealer();
+                gameRoom.stand(user.getName());
+                gameRoom.playDealer();
         }
         return gameRoom;
     }
@@ -76,10 +76,11 @@ public class BlackjackService {
     }
 
     public GameRoom double_down(String roomId, User user, long bet) {
-        System.out.println("balckjackservice_double_down");
+               System.out.println("balckjackservice_double_down");
         GameRoom gameRoom = gameRoomMap.get(roomId);
 
         gameRoom.double_down(user.getName(), bet);
+
 
         return gameRoom;
     }

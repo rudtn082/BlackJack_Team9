@@ -80,6 +80,7 @@ public class GameRoom {
         System.out.println("gameRoom_double_down");
         Player player = playerList.get(name);
 
+        player.hitCard();
         player.double_down_bet(bet);
     }
 
